@@ -19,7 +19,6 @@ spec:
             - containerPort: 5432
               name: postgres
           env:
-            # --- Injeção do ConfigMap ---
             - name: POSTGRES_PORT
               valueFrom:
                 configMapKeyRef:
@@ -35,17 +34,16 @@ spec:
                 configMapKeyRef:
                   name: postgres-config
                   key: PGDATA
-            # --- Injeção do Secret ---
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: username # Deve ser igual à chave definida no Secret
+                  key: username 
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: password # Deve ser igual à chave definida no Secret
+                  key: password 
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
