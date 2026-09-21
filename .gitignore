@@ -1,0 +1,5 @@
+# Arquivos de segredos reais
+postgres-secret.yaml
+*.secret.yaml
+*.key
+.env
