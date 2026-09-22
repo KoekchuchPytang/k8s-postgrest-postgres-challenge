@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgrest
+  namespace: k8s-desafio
   labels:
     app: postgrest
 spec:
@@ -34,10 +35,14 @@ spec:
             - name: POSTGRES_HOST
               value: "postgres"
             - name: POSTGRES_DB
-              value: "meubanco" 
+              valueFrom:
+                configMapKeyRef: { name: postgres-config, key: POSTGRES_DB }
+            - name: POSTGRES_PORT
+              valueFrom:
+                configMapKeyRef: { name: postgres-config, key: POSTGRES_PORT }
             
             - name: PGRST_DB_URI
-              value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):5432/$(POSTGRES_DB)"
+              value: "postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)"
             
             - name: PGRST_DB_SCHEMA
               value: "public"
@@ -50,3 +55,15 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "250m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
