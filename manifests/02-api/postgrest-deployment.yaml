@@ -47,7 +47,7 @@ spec:
             - name: PGRST_DB_SCHEMA
               value: "public"
             - name: PGRST_DB_ANON_ROLE
-              value: "postgres" 
+              value: "web_anon" 
           resources:
             requests:
               memory: "128Mi"

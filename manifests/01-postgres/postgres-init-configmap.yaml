@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-script
+data:
+  init.sql: |
+    CREATE ROLE web_anon NOLOGIN;
+    GRANT USAGE ON SCHEMA public TO web_anon;
+    GRANT SELECT, INSERT, UPDATE, DELETE ON tarefas TO web_anon;
+    GRANT USAGE, SELECT ON SEQUENCE tarefas_id_seq TO web_anon;
